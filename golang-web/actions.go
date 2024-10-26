@@ -37,3 +37,7 @@ func main() {
 	fmt.Println("Server started at localhost:9000")
 	http.ListenAndServe(":9000", nil)
 }
+
+func (t Info) GetAffiliationDetailInfo() string {
+	return "have 32 divisions"
+}
