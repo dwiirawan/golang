@@ -1,22 +1,41 @@
 package main
 
 import (
-  "belajar-restful/config"
-  "belajar-restful/handlers"
+	"belajar-restful/config"
+	"belajar-restful/handlers"
+	"fmt"
 
-  "github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2"
 )
 
+func authHandler(ctx *fiber.Ctx) error {
+	headers := ctx.GetReqHeaders()
+
+	fmt.Println(headers, "<<< iki headers")
+
+	return ctx.Next()
+}
+
 func main() {
-  app := fiber.New()
+	app := fiber.New()
 
-  config.Connect()
+	config.Connect()
 
-  app.Get("/user", handlers.GetUser)
-  app.Post("/user", handlers.AddUser)
-  app.Get("/user/:id", handlers.GetUserById)
-  app.Delete("/user/:id", handlers.DeleteUserById)
-  app.Put("/user/:id", handlers.UpdateUser)
+	private := app.Group("api", func(c *fiber.Ctx) error {
+		return authHandler(c)
+	})
 
-  app.Listen(":3000")
+	private.Get("private", func(c *fiber.Ctx) error {
+		return c.Status(200).SendString("success")
+	})
+
+	user := app.Group("/user")
+
+	user.Get("/", handlers.GetUser)
+	user.Post("/", handlers.AddUser)
+	user.Get("/:id", handlers.GetUserById)
+	user.Delete("/:id", handlers.DeleteUserById)
+	user.Put("/id", handlers.UpdateUser)
+
+	app.Listen(":3000")
 }
