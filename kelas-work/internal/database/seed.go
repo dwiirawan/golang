@@ -8,6 +8,9 @@ import (
 )
 
 func seedDB(db *gorm.DB) {
+	// Migrate to schema
+	db.AutoMigrate(&model.MenuItem{}, &model.Order{}, &model.ProdukOrder{})
+
 	foodMenu := []model.MenuItem{
 		{
 			Name:      "Bakmie",

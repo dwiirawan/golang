@@ -25,7 +25,7 @@ func (r *restoUsecase) GetMenuList(menuType string) ([]model.MenuItem, error) {
 	return r.menuRepo.GetMenuList(menuType)
 }
 
-func (r *restoUsecase) Order(request model.GetOrderMenuRequest) (model.Order, error) {
+func (r *restoUsecase) Order(request model.OrderMenuRequest) (model.Order, error) {
 	productOrderData := make([]model.ProdukOrder, len(request.OrderProducts))
 
 	for i, orderProduct := range request.OrderProducts {

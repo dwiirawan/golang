@@ -24,7 +24,7 @@ func (or *orderRepo) CreateOrder(order model.Order) (model.Order, error) {
 func (or *orderRepo) GetOrderInfo(OrderID string) (model.Order, error) {
 	var data model.Order
 
-	if err := or.db.Where(model.Order{ID: OrderID}).Preload("ProdctOrders").First(&data).Error; err != nil {
+	if err := or.db.Where(model.Order{ID: OrderID}).Preload("ProductOrders").First(&data).Error; err != nil {
 		return data, err
 	}
 	return data, nil

@@ -3,31 +3,31 @@ package model
 type OrderStatus string
 
 type Order struct {
-	ID            string `gorm:"primaryKey"`
-	Status        OrderStatus
-	ProductOrders []ProdukOrder
+	ID            string        `gorm:"primaryKey" json:"id"`
+	Status        OrderStatus   `json:"status"`
+	ProductOrders []ProdukOrder `json:"product_orders"`
 }
 
 type ProdukOrderStatus string
 
 type ProdukOrder struct {
-	ID         string `gorm:"primaryKey"`
-	OrderID    string
-	OrderCode  string
-	Quantity   int
-	TotalPrice int64
-	Status     ProdukOrderStatus
+	ID         string            `gorm:"primaryKey" json:"id"`
+	OrderID    string            `json:"order_id"`
+	OrderCode  string            `json:"order_code"`
+	Quantity   int               `json:"quantity"`
+	TotalPrice int64             `json:"total_price"`
+	Status     ProdukOrderStatus `json:"status"`
 }
 
 type OrderMenuProductRequest struct {
-	OrderCode string
-	Quantity  int
+	OrderCode string `json:"order_status"`
+	Quantity  int    `json:"quntity"`
 }
 
-type GetOrderMenuRequest struct {
-	OrderProducts []OrderMenuProductRequest
+type OrderMenuRequest struct {
+	OrderProducts []OrderMenuProductRequest `json:"order_products"`
 }
 
 type GetOrderInfoRequest struct {
-	OrderID string
+	OrderID string `json:"order_id"`
 }
