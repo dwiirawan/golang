@@ -9,6 +9,8 @@ type Address struct {
 }
 
 func main() {
+	passValue()
+	passReference()
 	operator()
 }
 
@@ -18,8 +20,8 @@ func passValue() {
 
 	address2.City = "Bandung"
 
-	fmt.Println(address1)
-	fmt.Println(address2)
+	fmt.Println(address1) //{Subang Jawa Barat Indonesia}
+	fmt.Println(address2) //{Bandung Jawa Barat Indonesia}
 }
 
 func passReference() {
@@ -29,8 +31,8 @@ func passReference() {
 
 	address2.City = "Bandung"
 
-	fmt.Println(address1)
-	fmt.Println(address2)
+	fmt.Println(address1) //{Bandung Jawa Barat Indonesia}
+	fmt.Println(address2) //&{Bandung Jawa Barat Indonesia}
 }
 
 func operator() {
@@ -40,6 +42,6 @@ func operator() {
 
 	*address2 = Address{"Jakarta", "DKI Jakarta", "Indonesia"}
 
-	fmt.Println(address1)
-	fmt.Println(address2)
+	fmt.Println(address1) //{Jakarta DKI Jakarta Indonesia}
+	fmt.Println(address2) //&{Jakarta DKI Jakarta Indonesia}
 }

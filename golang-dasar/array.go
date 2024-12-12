@@ -18,6 +18,6 @@ func main() {
 
 	// Looping for
 	for i := 0; i < len(bar); i++ {
-		fmt.Println("Perulangan ke-", bar[i].Nama)
+		fmt.Println("Perulangan ke-", i, bar[i].Nama)
 	}
 }
