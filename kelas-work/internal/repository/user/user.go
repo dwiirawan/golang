@@ -67,5 +67,29 @@ func (ur *userRepo) CheckRegistered(username string) (bool, error) {
 	return userData.ID != "", nil
 }
 
-// implemen beda file karena kode lumayan kompleks
+// implemen GenerateUserHash
+// beda file karena kode lumayan kompleks
 // func (ur *userRepo) GenerateUserHash(password string) (hash string, err error) {}
+
+func (ur *userRepo) GetUserData(username string) (model.User, error) {
+	var userData model.User
+
+	if err := ur.db.Where(model.User{Username: username}).First(&userData).Error; err != nil {
+		return userData, err
+	}
+
+	return userData, nil
+}
+
+func (ur *userRepo) VerifyLogin(username, password string, userData model.User) (bool, error) {
+	if username != userData.Username {
+		return false, nil
+	}
+
+	verified, err := ur.comparePassword(password, userData.Hash)
+	if err != nil {
+		return false, err
+	}
+
+	return verified, nil
+}
