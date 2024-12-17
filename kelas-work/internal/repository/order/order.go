@@ -11,7 +11,9 @@ type orderRepo struct {
 }
 
 func GetRepository(db *gorm.DB) Repository {
-	return &orderRepo{db: db}
+	return &orderRepo{
+		db: db,
+	}
 }
 
 func (or *orderRepo) CreateOrder(order model.Order) (model.Order, error) {
@@ -21,10 +23,10 @@ func (or *orderRepo) CreateOrder(order model.Order) (model.Order, error) {
 	return order, nil
 }
 
-func (or *orderRepo) GetOrderInfo(OrderID string) (model.Order, error) {
+func (or *orderRepo) GetOrderInfo(orderID string) (model.Order, error) {
 	var data model.Order
 
-	if err := or.db.Where(model.Order{ID: OrderID}).Preload("ProductOrders").First(&data).Error; err != nil {
+	if err := or.db.Where(model.Order{ID: orderID}).Preload("ProductOrders").First(&data).Error; err != nil {
 		return data, err
 	}
 	return data, nil
