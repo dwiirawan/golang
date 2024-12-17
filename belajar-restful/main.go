@@ -33,10 +33,10 @@ func main() {
 
 	user.Get("/", handlers.GetUser)
 	user.Post("/", handlers.AddUser)
-	// user.Get("/:id", handlers.GetUserById)
+	user.Get("/:id", handlers.GetUserById)
 	user.Get("/:nama", handlers.GetNama)
 	user.Delete("/:id", handlers.DeleteUserById)
-	user.Put("/id", handlers.UpdateUser)
+	user.Put("/:id", handlers.UpdateUser)
 
 	app.Listen(":3000")
 }
