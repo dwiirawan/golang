@@ -3,18 +3,22 @@ package user
 import (
 	"crypto/aes"
 	"crypto/cipher"
+	"crypto/rsa"
 	"go-restaurant-app/internal/model"
+	"time"
 
 	"gorm.io/gorm"
 )
 
 type userRepo struct {
-	db      *gorm.DB
-	gcm     cipher.AEAD
-	time    uint32
-	memory  uint32
-	threads uint8
-	keyLen  uint32
+	db        *gorm.DB
+	gcm       cipher.AEAD
+	time      uint32
+	memory    uint32
+	threads   uint8
+	keyLen    uint32
+	signKey   *rsa.PrivateKey
+	accessExp time.Duration
 }
 
 func GetRepository(
@@ -24,6 +28,8 @@ func GetRepository(
 	memory uint32,
 	threads uint8,
 	keyLen uint32,
+	signKey *rsa.PrivateKey,
+	accessExp time.Duration,
 ) (Repository, error) {
 	block, err := aes.NewCipher([]byte(secret))
 	if err != nil {
@@ -36,12 +42,14 @@ func GetRepository(
 	}
 
 	return &userRepo{
-		db:      db,
-		gcm:     gcm,
-		time:    time,
-		memory:  memory,
-		threads: threads,
-		keyLen:  keyLen,
+		db:        db,
+		gcm:       gcm,
+		time:      time,
+		memory:    memory,
+		threads:   threads,
+		keyLen:    keyLen,
+		signKey:   signKey,
+		accessExp: accessExp,
 	}, nil
 }
 

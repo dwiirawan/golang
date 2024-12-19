@@ -1,12 +1,18 @@
 package rest
 
-import "github.com/labstack/echo/v4"
+import (
+	"github.com/labstack/echo/v4"
+)
 
 func LoadRoutes(e *echo.Echo, handler *handler) {
-	e.GET("/menu", handler.GetMenuList)
+	menuGroup := e.Group("/menu")
+	menuGroup.GET("", handler.GetMenuList)
 
-	e.POST("/order", handler.Order)
-	e.GET("/order/:orderID", handler.GetOrderInfo)
+	orderGroup := e.Group("/order")
+	orderGroup.POST("", handler.Order)
+	orderGroup.GET("/:orderID", handler.GetOrderInfo)
 
-	e.POST("/user/register", handler.RegisterUser)
+	userGroup := e.Group("/user")
+	userGroup.POST("/register", handler.RegisterUser)
+	userGroup.POST("/login", handler.Login)
 }
