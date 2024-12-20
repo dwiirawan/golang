@@ -2,6 +2,7 @@ package main
 
 import "fmt"
 
+// sumber: https://github.com/jacky-htg/golang-essentials/blob/master/golang-fundamental/pseudo_oop.md
 // struct
 // - sebuah tipe data abstract
 // - berisi dari kumpulan dari berbagai type
