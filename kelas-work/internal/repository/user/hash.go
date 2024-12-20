@@ -5,7 +5,6 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"hash"
 	"strings"
 
 	"golang.org/x/crypto/argon2"
@@ -38,7 +37,7 @@ func (ur *userRepo) encrypt(text []byte) string {
 	return base64.StdEncoding.EncodeToString(chipertext)
 }
 
-func (u *userRepo) decrypt(chipertext string) ([]byte, error) {
+func (ur *userRepo) decrypt(chipertext string) ([]byte, error) {
 	decode, err := base64.StdEncoding.DecodeString(chipertext)
 	if err != nil {
 		return nil, err
@@ -48,8 +47,8 @@ func (u *userRepo) decrypt(chipertext string) ([]byte, error) {
 	}
 
 	return ur.gcm.Open(nil,
-		decoded[:ur.gcm.NonceSize()],
-		decoded[ur.gcm.NonceSize():],
+		decode[:ur.gcm.NonceSize()],
+		decode[ur.gcm.NonceSize():],
 		nil,
 	)
 }
@@ -58,7 +57,7 @@ func (ur *userRepo) comparePassword(password, hash string) (bool, error) {
 	parts := strings.Split(hash, "$")
 
 	var memory, time uint32
-	var parallelism uint 8
+	var parallelism uint8
 
 	switch parts[1] {
 	case "argon2id":
@@ -75,7 +74,7 @@ func (ur *userRepo) comparePassword(password, hash string) (bool, error) {
 		hash := parts[5]
 
 		decryptedHash, err := ur.decrypt(hash)
-		if err!= nil {
+		if err != nil {
 			return false, err
 		}
 
@@ -83,7 +82,7 @@ func (ur *userRepo) comparePassword(password, hash string) (bool, error) {
 
 		comparisonHash := argon2.IDKey([]byte(password), salt, time, memory, parallelism, keyLen)
 
-		return subtle.ConstantTimeCompare(comparisonHash, decryptedHash)  == 1, nil
+		return subtle.ConstantTimeCompare(comparisonHash, decryptedHash) == 1, nil
 	}
 
 	return false, nil
